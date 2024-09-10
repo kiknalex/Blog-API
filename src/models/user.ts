@@ -5,12 +5,12 @@ const user = {
   getAll: async () => {
     try {
       const users = await db.user.findMany();
-      console.log(users);
       if (!users.length) {
-        throw new Api404Error(`Users not found.`);
+        throw new Api404Error(`No users exist in a database.`);
       }
-    } catch (err) {
-      console.error(err);
+      return users;
+    } catch (error) {
+      console.error(error);
     }
   },
   getById: async (id: number) => {
@@ -24,16 +24,9 @@ const user = {
         throw new Api404Error(`User with id: ${id} not found.`);
       }
       return user;
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
-  },
-  getByUsername: async (username: string) => {
-    return await db.user.findUnique({
-      where: {
-        username,
-      },
-    });
   },
 };
 

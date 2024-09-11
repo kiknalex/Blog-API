@@ -28,6 +28,18 @@ const user = {
       console.error(error);
     }
   },
+  getByUsername: async (username: string) => {
+    try {
+      const user = await db.user.findUnique({
+        where: {
+          username,
+        },
+      });
+      return user;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
 
 export default user;

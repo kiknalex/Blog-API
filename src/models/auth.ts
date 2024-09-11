@@ -16,6 +16,21 @@ const auth = {
       throw new BaseError("Register error", 400, true, String(error));
     }
   },
+  getUserWithPassword: async (username: string) => {
+    try {
+      const user = await db.user.findUnique({
+        where: {
+          username,
+        },
+        omit: {
+          password: false,
+        },
+      });
+      return user;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
 
 export default auth;

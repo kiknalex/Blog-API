@@ -1,4 +1,4 @@
-import {CustomError, ErrorHandler} from "@/types/error";
+import {ErrorHandler} from "@/types/error";
 import BaseError from "@utils/errors/baseError";
 
 const logError: ErrorHandler = (err, req, res, next) => {

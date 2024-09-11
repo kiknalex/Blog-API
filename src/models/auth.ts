@@ -1,5 +1,4 @@
 import db from "@/database";
-import Api404Error from "@/utils/errors/api404Error";
 import BaseError from "@/utils/errors/baseError";
 
 const auth = {

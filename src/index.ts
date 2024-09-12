@@ -1,7 +1,11 @@
 import express, {Request, Response} from "express";
 import "dotenv/config";
 import routes from "./routes";
-import {isOperationalError, logError} from "./middlewares/errorHandler";
+import {
+  isOperationalError,
+  logError,
+  returnError,
+} from "./middlewares/errorHandler";
 import {CustomError} from "./types/error";
 
 const app = express();
@@ -11,6 +15,7 @@ app.use("/users", routes.user);
 app.use("/users", routes.auth);
 app.use("/posts", routes.post);
 app.use(logError);
+app.use(returnError);
 process.on("unhandledRejection", (error) => {
   throw error;
 });

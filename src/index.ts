@@ -9,11 +9,14 @@ import {
 import {CustomError} from "./types/error";
 
 const app = express();
+
 app.use(express.urlencoded({extended: true}));
 
 app.use("/users", routes.user);
 app.use("/users", routes.auth);
 app.use("/posts", routes.post);
+app.use("/comments", routes.comment);
+
 app.use(logError);
 app.use(returnError);
 process.on("unhandledRejection", (error) => {

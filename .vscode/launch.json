@@ -5,7 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "test debug",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "name": "nodemon",
@@ -15,16 +14,6 @@
       "runtimeExecutable": "nodemon",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
-    },
-    {
-      "name": "Debug nodemon",
-      "type": "node",
-      "request": "attach",
-      "restart": true,
-      "localRoot": "${workspaceFolder}/dist",
-      "remoteRoot": "${workspaceFolder}",
-      "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
   ]

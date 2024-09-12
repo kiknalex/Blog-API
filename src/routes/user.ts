@@ -4,6 +4,6 @@ import {Router} from "express";
 const router = Router();
 
 router.get("/", controllers.user.getAll);
-router.get("/:id", controllers.user.getById);
+router.get("/:userId", controllers.user.getById);
 
 export default router;

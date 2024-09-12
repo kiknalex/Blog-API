@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", controllers.post.getAll);
 router.post("/", controllers.post.create);
-router.put("/:id", controllers.post.edit);
-router.delete("/:id", controllers.post.delete);
+router.put("/:postId", controllers.post.edit);
+router.delete("/:postId", controllers.post.delete);
 
 export default router;

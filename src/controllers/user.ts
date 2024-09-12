@@ -11,9 +11,9 @@ const user = {
     }
   },
   getById: async (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
+    const userId = req.params.userId;
     try {
-      const user = await models.user.getById(+id);
+      const user = await models.user.getById(+userId);
       res.json(user);
     } catch (error) {
       next(error);

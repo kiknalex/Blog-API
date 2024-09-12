@@ -46,7 +46,7 @@ const post = {
         return;
       }
       const userId = req.context!.authData.userId;
-      const postId = +req.params.id;
+      const postId = +req.params.postId;
       try {
         const newPost = await models.post.edit(postId, userId, {
           title: req.body.title,
@@ -62,7 +62,7 @@ const post = {
     verifyToken,
     async (req: Request, res: Response, next: NextFunction) => {
       const userId = req.context!.authData.userId;
-      const postId = +req.params.id;
+      const postId = +req.params.postId;
 
       try {
         await models.post.delete(postId, userId);

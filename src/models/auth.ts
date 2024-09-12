@@ -1,5 +1,5 @@
 import db from "@/database";
-import BaseError from "@/utils/errors/baseError";
+import {checkPrismaErrors} from "@/utils/errors/prismaErrors";
 
 const auth = {
   createUserRecord: async (username: string, password: string) => {
@@ -11,8 +11,7 @@ const auth = {
         },
       });
     } catch (error) {
-      console.error(error);
-      throw new BaseError("Register error", 400, true, String(error));
+      checkPrismaErrors(error);
     }
   },
   getUserWithPassword: async (username: string) => {
@@ -27,7 +26,7 @@ const auth = {
       });
       return user;
     } catch (error) {
-      console.error(error);
+      checkPrismaErrors(error);
     }
   },
 };

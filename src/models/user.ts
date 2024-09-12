@@ -1,5 +1,6 @@
 import db from "@/database";
 import Api404Error from "@/utils/errors/api404Error";
+import {checkPrismaErrors} from "@/utils/errors/prismaErrors";
 
 const user = {
   getAll: async () => {
@@ -10,7 +11,7 @@ const user = {
       }
       return users;
     } catch (error) {
-      console.error(error);
+      checkPrismaErrors(error);
     }
   },
   getById: async (id: number) => {
@@ -25,7 +26,7 @@ const user = {
       }
       return user;
     } catch (error) {
-      console.error(error);
+      checkPrismaErrors(error);
     }
   },
   getByUsername: async (username: string) => {
@@ -37,7 +38,7 @@ const user = {
       });
       return user;
     } catch (error) {
-      console.error(error);
+      checkPrismaErrors(error);
     }
   },
 };

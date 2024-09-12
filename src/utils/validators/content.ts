@@ -32,3 +32,9 @@ export const validateEditPost = [
     .trim()
     .escape(),
 ];
+
+export const validateComment = body("content")
+  .isLength({min: 1, max: 300})
+  .withMessage("Text must be between 1 to 300 characters.")
+  .trim()
+  .escape();

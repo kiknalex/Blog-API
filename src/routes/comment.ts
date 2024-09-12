@@ -1,11 +1,11 @@
 import controllers from "@/controllers";
 import {Router} from "express";
 
-const router = Router();
+const router = Router({mergeParams: true});
 
-router.get("/", controllers.comment.getAll);
+router.get("/", controllers.comment.getAllForPost);
 router.post("/", controllers.comment.create);
-router.put("/:id", controllers.comment.edit);
-router.delete("/:id", controllers.comment.delete);
+router.put("/:commentId", controllers.comment.edit);
+router.delete("/:commentId", controllers.comment.delete);
 
 export default router;

@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import BaseError from "@/utils/errors/baseError";
 import models from "@/models";
 import jwt from "jsonwebtoken";
+import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 const registerValidation = [validateLogin, validatePassword];
 
 const auth = {
@@ -14,16 +15,7 @@ const auth = {
     async (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req).array();
       if (errors.length) {
-        res.status(400).json(
-          errors.map((error) => {
-            if (error.type === "field") {
-              return {
-                field: error.path,
-                message: error.msg,
-              };
-            }
-          })
-        );
+        res.status(400).json(handleValidationErrors(errors));
         return;
       }
 

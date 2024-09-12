@@ -37,8 +37,8 @@ const post = {
     },
   ],
   edit: [
-    verifyToken,
     ...validateEditPost,
+    verifyToken,
     async (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req).array();
       if (errors.length) {

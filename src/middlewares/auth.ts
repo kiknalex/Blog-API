@@ -1,3 +1,4 @@
+import models from "@/models";
 import {AuthData} from "@/types/AuthData";
 import BaseError from "@/utils/errors/baseError";
 import "dotenv/config";
@@ -33,5 +34,22 @@ export const verifyToken = (
         next();
       }
     });
+  }
+};
+
+export const isAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.context?.authData) {
+    throw new Error("Something went wrong.");
+  }
+
+  try {
+    await models.admin.isAdmin(req.context.authData.userId);
+    next();
+  } catch (error) {
+    next(error);
   }
 };

@@ -16,9 +16,11 @@ app.use("/users", routes.user);
 app.use("/users", routes.auth);
 app.use("/posts", routes.post);
 app.use("/posts/:postId/comments", routes.comment);
+app.use("/admin", routes.admin);
 
 app.use(logError);
 app.use(returnError);
+
 process.on("unhandledRejection", (error) => {
   throw error;
 });

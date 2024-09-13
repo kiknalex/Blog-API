@@ -1,12 +1,23 @@
 import {verifyToken} from "@/middlewares/auth";
 import models from "@/models";
+import {ValidationErrors} from "@/types/error";
+import {
+  RequestWithAll,
+  RequestWithParams,
+  RequestWithParamsAndBody,
+} from "@/types/Request";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 import {validateComment} from "@/utils/validators/content";
+import {Comment} from "@prisma/client";
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
 
 const comment = {
-  getAllForPost: async (req: Request, res: Response, next: NextFunction) => {
+  getAllForPost: async (
+    req: RequestWithParams<{postId: number}>, // test
+    res: Response<Comment[]>,
+    next: NextFunction
+  ) => {
     const postId = +req.params.postId;
     try {
       const comments = await models.comment.getAllForPost(postId);
@@ -17,7 +28,11 @@ const comment = {
   },
   create: [
     validateComment,
-    async function anonCreate(req: Request, res: Response, next: NextFunction) {
+    async function anonCreate(
+      req: Request,
+      res: Response<string | ValidationErrors>,
+      next: NextFunction
+    ) {
       if (!req.query.anon === true) {
         next();
       } else {
@@ -36,14 +51,21 @@ const comment = {
       }
     },
     verifyToken,
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+      req: RequestWithParamsAndBody<
+        {postId: string},
+        {title: string; content: string}
+      >,
+      res: Response<string | ValidationErrors>,
+      next: NextFunction
+    ) => {
       const errors = validationResult(req).array();
       if (errors.length) {
         res.status(400).json(handleValidationErrors(errors));
         return;
       }
       const postId = +req.params.postId;
-      const userId = req.context!.authData.userId;
+      const userId = req.context!.authData?.userId;
 
       try {
         await models.comment.create(
@@ -62,13 +84,17 @@ const comment = {
   edit: [
     validateComment,
     verifyToken,
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+      req: RequestWithParams<{commentId: string}>,
+      res: Response<Comment | ValidationErrors>,
+      next: NextFunction
+    ) => {
       const errors = validationResult(req).array();
       if (errors.length) {
         res.status(400).json(handleValidationErrors(errors));
         return;
       }
-      const userId = req.context!.authData.userId;
+      const userId = req.context!.authData!.userId;
       const commentId = +req.params.commentId;
       try {
         const newComment = await models.comment.edit(commentId, userId, {
@@ -82,8 +108,12 @@ const comment = {
   ],
   delete: [
     verifyToken,
-    async (req: Request, res: Response, next: NextFunction) => {
-      const userId = req.context!.authData.userId;
+    async (
+      req: RequestWithParams<{commentId: string}>,
+      res: Response<string>,
+      next: NextFunction
+    ) => {
+      const userId = req.context!.authData!.userId!;
       const commentId = +req.params.commentId;
 
       try {

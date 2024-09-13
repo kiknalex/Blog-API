@@ -1,18 +1,24 @@
 import "dotenv/config";
 import {validateLogin, validatePassword} from "@/utils/validators/auth";
-import {NextFunction, Request, Response} from "express";
+import {NextFunction, Response} from "express";
 import {body, validationResult} from "express-validator";
 import bcrypt from "bcryptjs";
 import BaseError from "@/utils/errors/baseError";
 import models from "@/models";
 import jwt from "jsonwebtoken";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
+import {RequestWithBody} from "@/types/Request";
+import {ValidationErrors} from "@/types/error";
 const registerValidation = [validateLogin, validatePassword];
 
 const auth = {
   registerUser: [
     ...registerValidation,
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+      req: RequestWithBody<{username: string; password: string}>,
+      res: Response<string | ValidationErrors>,
+      next: NextFunction
+    ) => {
       const errors = validationResult(req).array();
       if (errors.length) {
         res.status(400).json(handleValidationErrors(errors));
@@ -47,7 +53,11 @@ const auth = {
   ],
   loginUser: [
     body("username").escape().trim(),
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+      req: RequestWithBody<{username: string; password: string}>,
+      res: Response<string | {token: string | undefined}>,
+      next: NextFunction
+    ) => {
       const user = await models.auth.getUserWithPassword(req.body.username);
       if (!user) {
         res.status(400).send("Username or password is incorrect.");

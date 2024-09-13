@@ -1,8 +1,14 @@
 import {NextFunction, Request, Response} from "express";
 import models from "@/models";
+import {RequestWithParams} from "@/types/Request";
+import {UserWithoutPassword} from "@/types/UserWithoutPassword";
 
 const user = {
-  getAll: async (req: Request, res: Response, next: NextFunction) => {
+  getAll: async (
+    req: Request,
+    res: Response<UserWithoutPassword[]>,
+    next: NextFunction
+  ) => {
     try {
       const users = await models.user.getAll();
       res.json(users);
@@ -10,7 +16,11 @@ const user = {
       next(error);
     }
   },
-  getById: async (req: Request, res: Response, next: NextFunction) => {
+  getById: async (
+    req: RequestWithParams<{userId: string}>,
+    res: Response<UserWithoutPassword>,
+    next: NextFunction
+  ) => {
     const userId = req.params.userId;
     try {
       const user = await models.user.getById(+userId);

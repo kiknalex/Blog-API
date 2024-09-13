@@ -36,7 +36,7 @@ const user = {
       isAdmin,
       async (
         req: RequestWithParams<{userId: string}>,
-        res: Response,
+        res: Response<string>,
         next: NextFunction
       ) => {
         const userId = +req.params.userId;

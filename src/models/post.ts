@@ -68,6 +68,20 @@ const post = {
       checkPrismaErrors(error);
     }
   },
+  editPublished: async (postId: number, isPublished: boolean) => {
+    try {
+      await db.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          published: isPublished,
+        },
+      });
+    } catch (error) {
+      throw new Api404Error("Not found.");
+    }
+  },
   admin: {
     delete: async (id: number) => {
       try {

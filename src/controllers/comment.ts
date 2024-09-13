@@ -1,11 +1,16 @@
 import {isAdmin, verifyToken} from "@/middlewares/auth";
 import models from "@/models";
 import {ValidationErrors} from "@/types/error";
-import {RequestWithParams, RequestWithParamsAndBody} from "@/types/Request";
+import {Query} from "express-serve-static-core";
+import {
+  RequestWithAll,
+  RequestWithParams,
+  RequestWithParamsAndBody,
+} from "@/types/Request";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 import {validateComment} from "@/utils/validators/content";
 import {Comment} from "@prisma/client";
-import {NextFunction, Request, Response} from "express";
+import {NextFunction, Response} from "express";
 import {validationResult} from "express-validator";
 
 const comment = {
@@ -25,11 +30,11 @@ const comment = {
   create: [
     validateComment,
     async function anonCreate(
-      req: Request<{postId: string}, {}, {content: string}>, // TO FIX: typescript error when entering query in Request return type.
+      req: RequestWithAll<{postId: string}, {content: string}, Query>,
       res: Response<string | ValidationErrors>,
       next: NextFunction
     ) {
-      if (req.query.anon !== "true") {
+      if (req.query.anon === "true") {
         next();
       } else {
         const errors = validationResult(req).array();

@@ -5,7 +5,9 @@ import {
   RequestWithBody,
   RequestWithParams,
   RequestWithParamsAndBody,
+  RequestWithParamsAndQuery,
 } from "@/types/Request";
+import {Query} from "express-serve-static-core";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 import {validateEditPost, validatePost} from "@/utils/validators/content";
 import {Post} from "@prisma/client";
@@ -89,6 +91,25 @@ const post = {
       try {
         await models.post.delete(postId, userId);
         res.send(`Post with id: ${postId} successfully deleted.`);
+      } catch (error) {
+        next(error);
+      }
+    },
+  ],
+  editPublicity: [
+    verifyToken,
+    async (
+      req: RequestWithParamsAndQuery<
+        {postId: string},
+        Query // TO FIX: Typescript error if type object
+      >,
+      res: Response<string>,
+      next: NextFunction
+    ) => {
+      const postId = +req.params.postId;
+      const isPublished = req.query.published === "true";
+      try {
+        await models.post.editPublished(postId, isPublished);
       } catch (error) {
         next(error);
       }

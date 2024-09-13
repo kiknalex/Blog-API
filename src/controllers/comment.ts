@@ -5,6 +5,7 @@ import {
   RequestWithAll,
   RequestWithParams,
   RequestWithParamsAndBody,
+  RequestWithQuery,
 } from "@/types/Request";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 import {validateComment} from "@/utils/validators/content";
@@ -14,7 +15,7 @@ import {validationResult} from "express-validator";
 
 const comment = {
   getAllForPost: async (
-    req: RequestWithParams<{postId: number}>, // test
+    req: RequestWithParams<{postId: string}>, // test
     res: Response<Comment[]>,
     next: NextFunction
   ) => {
@@ -29,7 +30,7 @@ const comment = {
   create: [
     validateComment,
     async function anonCreate(
-      req: Request,
+      req: RequestWithAll<{postId: string}, {content: string}, {anon: boolean}>,
       res: Response<string | ValidationErrors>,
       next: NextFunction
     ) {

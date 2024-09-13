@@ -47,7 +47,7 @@ export const isAdmin = async (
   }
 
   try {
-    await models.admin.isAdmin(req.context.authData.userId);
+    await models.user.isAdmin(req.context.authData.userId);
     next();
   } catch (error) {
     next(error);

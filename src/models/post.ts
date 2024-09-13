@@ -68,6 +68,19 @@ const post = {
       checkPrismaErrors(error);
     }
   },
+  admin: {
+    delete: async (id: number) => {
+      try {
+        await db.post.delete({
+          where: {
+            id,
+          },
+        });
+      } catch (error) {
+        throw new Api404Error("Not found.");
+      }
+    },
+  },
 };
 
 export default post;

@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import models from "@/models";
 import {RequestWithParams} from "@/types/Request";
 import {UserWithoutPassword} from "@/database/types/UserWithoutPassword";
+import {isAdmin, verifyToken} from "@/middlewares/auth";
 
 const user = {
   getAll: async (
@@ -28,6 +29,26 @@ const user = {
     } catch (error) {
       next(error);
     }
+  },
+  admin: {
+    grandAdminRole: [
+      verifyToken,
+      isAdmin,
+      async (
+        req: RequestWithParams<{userId: string}>,
+        res: Response,
+        next: NextFunction
+      ) => {
+        const userId = +req.params.userId;
+
+        try {
+          await models.user.admin.editRole(userId, "ADMIN");
+          res.send(`Admin privilege granted to id: ${userId}`);
+        } catch (error) {
+          next(error);
+        }
+      },
+    ],
   },
 };
 

@@ -1,4 +1,4 @@
-import {verifyToken} from "@/middlewares/auth";
+import {isAdmin, verifyToken} from "@/middlewares/auth";
 import models from "@/models";
 import {ValidationErrors} from "@/types/error";
 import {
@@ -94,6 +94,25 @@ const post = {
       }
     },
   ],
+  admin: {
+    delete: [
+      verifyToken,
+      isAdmin,
+      async (
+        req: RequestWithParams<{postId: string}>,
+        res: Response<string>,
+        next: NextFunction
+      ) => {
+        const postId = +req.params.postId;
+        try {
+          await models.post.admin.delete(postId);
+          res.send("Post deleted.");
+        } catch (error) {
+          next(error);
+        }
+      },
+    ],
+  },
 };
 
 export default post;

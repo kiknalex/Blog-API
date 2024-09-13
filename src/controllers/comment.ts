@@ -1,4 +1,4 @@
-import {verifyToken} from "@/middlewares/auth";
+import {isAdmin, verifyToken} from "@/middlewares/auth";
 import models from "@/models";
 import {ValidationErrors} from "@/types/error";
 import {RequestWithParams, RequestWithParamsAndBody} from "@/types/Request";
@@ -120,6 +120,25 @@ const comment = {
       }
     },
   ],
+  admin: {
+    delete: [
+      verifyToken,
+      isAdmin,
+      async (
+        req: RequestWithParams<{commentId: string}>,
+        res: Response<string>,
+        next: NextFunction
+      ) => {
+        const commentId = +req.params.commentId;
+        try {
+          await models.comment.admin.delete(commentId);
+          res.send("Comment deleted.");
+        } catch (error) {
+          next(error);
+        }
+      },
+    ],
+  },
 };
 
 export default comment;

@@ -1,3 +1,4 @@
+import {AuthData} from "@/types/AuthData";
 import BaseError from "@/utils/errors/baseError";
 import "dotenv/config";
 import {NextFunction, Request, Response} from "express";
@@ -23,14 +24,12 @@ export const verifyToken = (
     }
     const token = bearerHeader.split(" ")[1];
 
-    req.context = req.context ?? {};
-
     jwt.verify(token, process.env.JWTKEY, (err, authData) => {
       if (err) {
         res.status(401).send(err.message);
       } else {
         req.context = req.context ?? {};
-        req.context.authData = authData;
+        req.context.authData = authData as unknown as AuthData;
         next();
       }
     });

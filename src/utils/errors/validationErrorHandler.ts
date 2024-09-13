@@ -5,11 +5,11 @@ const handleValidationErrors = (errors: Array<ValidationError>) => {
     if (error.type === "field") {
       return {
         field: error.path,
-        message: error.msg,
+        message: String(error.msg),
       };
     } else {
       return {
-        message: error.msg,
+        message: String(error.msg),
       };
     }
   });

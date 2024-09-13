@@ -1,8 +1,13 @@
 import {Request} from "express";
-import {AuthData} from "./AuthData";
 
-export type RequestWithQuery<T> = Request<{}, {}, {}, T>;
-export type RequestWithBody<T> = Request<{}, {}, T>;
-export type RequestWithParams<T> = Request<T>;
-export type RequestWithParamsAndBody<T, T1> = Request<T, {}, T1>;
-export type RequestWithAll<T, T1, T2> = Request<T, {}, T1, T2>;
+export type RequestWithQuery<Q> = Request<{}, {}, {}, Q>;
+export type RequestWithBody<B> = Request<{}, {}, B>;
+export type RequestWithParams<P> = Request<P>;
+export type RequestWithParamsAndBody<P, B> = Request<P, {}, B>;
+export type RequestWithAll<P, B, Q> = Request<P, {}, B, Q>;
+export type CustomRequest = Request<
+  {postId: string},
+  {},
+  {content: string},
+  {anon: boolean}
+>;

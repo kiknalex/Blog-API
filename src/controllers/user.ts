@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import models from "@/models";
 import {RequestWithParams} from "@/types/Request";
-import {UserWithoutPassword} from "@/types/UserWithoutPassword";
+import {UserWithoutPassword} from "@/database/types/UserWithoutPassword";
 
 const user = {
   getAll: async (

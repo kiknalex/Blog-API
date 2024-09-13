@@ -1,12 +1,11 @@
 import {Express} from "express-serve-static-core";
 import {Request} from "express";
+import {AuthData} from "./AuthData";
 
 declare module "express-serve-static-core" {
   interface Request {
     context?: {
-      models?: object;
-      authData?: JwtPayload;
-      access_token?: string;
+      authData?: AuthData;
     };
   }
 }

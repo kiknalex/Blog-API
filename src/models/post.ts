@@ -15,6 +15,21 @@ const post = {
       checkPrismaErrors(error);
     }
   },
+  getById: async (id: number) => {
+    try {
+      const post = await db.post.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (post === null) {
+        throw new Api404Error(`Post with id: ${id} not found.`);
+      }
+      return post;
+    } catch (error) {
+      checkPrismaErrors(error);
+    }
+  },
   create: async (
     authorId: number,
     data: {

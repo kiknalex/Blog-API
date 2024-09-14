@@ -23,6 +23,19 @@ const post = {
       next(error);
     }
   },
+  getById: async (
+    req: RequestWithParams<{postId: string}>,
+    res: Response<Post>,
+    next: NextFunction
+  ) => {
+    const postId = req.params.postId;
+    try {
+      const post = await models.post.getById(+postId);
+      res.json(post);
+    } catch (error) {
+      next(error);
+    }
+  },
   create: [
     ...validatePost,
     verifyToken,

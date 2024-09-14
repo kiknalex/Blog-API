@@ -31,7 +31,7 @@
     "typescript-eslint": "^8.4.0"
   },
   "scripts": {
-    "prepare": "tsc",
+    "prepare": "npx tsc",
     "start": "ts-node -r tsconfig-paths/register dist/index.js",
     "dev": "nodemon --exec npx ts-node --files ./src/index.ts",
     "debug": "nodemon --inspect --exec npx ts-node --files ./src/index.ts",

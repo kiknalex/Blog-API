@@ -110,6 +110,8 @@ const post = {
       const isPublished = req.query.published === "true";
       try {
         await models.post.editPublished(postId, isPublished);
+        const publishedAction = isPublished ? "published" : "unpublished";
+        res.send(`Post ${publishedAction}`);
       } catch (error) {
         next(error);
       }

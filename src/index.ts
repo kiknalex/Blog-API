@@ -33,7 +33,7 @@ process.on("uncaughtException", (error: CustomError) => {
   }
 });
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("https://github.com/kiknalex/Blog-API");
 });
 
 app.listen(process.env.PORT, () => {

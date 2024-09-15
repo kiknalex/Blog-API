@@ -7,9 +7,14 @@ import {
   returnError,
 } from "./middlewares/errorHandler";
 import {CustomError} from "./types/error";
-
+import cors from "cors";
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:5173/",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: true}));
 
 app.use("/users", routes.user);

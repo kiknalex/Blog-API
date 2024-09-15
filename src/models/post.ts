@@ -6,7 +6,18 @@ import {checkPrismaErrors} from "@/utils/errors/prismaErrors";
 const post = {
   getAll: async () => {
     try {
-      const posts = await db.post.findMany();
+      const posts = await db.post.findMany({
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+          _count: {
+            select: {comments: true},
+          },
+        },
+      });
       if (!posts.length) {
         throw new Api404Error("No posts found.");
       }

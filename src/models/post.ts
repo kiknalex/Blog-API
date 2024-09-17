@@ -7,6 +7,9 @@ const post = {
   getAll: async () => {
     try {
       const posts = await db.post.findMany({
+        orderBy: {
+          date_posted: "desc",
+        },
         include: {
           author: {
             select: {
@@ -31,6 +34,16 @@ const post = {
       const post = await db.post.findUnique({
         where: {
           id,
+        },
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+          comments: {
+            take: 6,
+          },
         },
       });
       if (post === null) {

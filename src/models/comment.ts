@@ -10,6 +10,13 @@ const comment = {
         where: {
           postId,
         },
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+        },
       });
       return comments;
     } catch (error) {

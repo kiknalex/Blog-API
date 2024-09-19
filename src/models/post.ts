@@ -54,6 +54,9 @@ const post = {
           },
           comments: {
             take: 6,
+            orderBy: {
+              date_posted: "desc",
+            },
           },
           _count: {
             select: {

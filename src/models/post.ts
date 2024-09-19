@@ -55,6 +55,11 @@ const post = {
           comments: {
             take: 6,
           },
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
         },
       });
       if (post === null) {

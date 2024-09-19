@@ -4,9 +4,11 @@ import Api404Error from "@/utils/errors/api404Error";
 import {checkPrismaErrors} from "@/utils/errors/prismaErrors";
 
 const post = {
-  getAll: async () => {
+  getAll: async (page: number = 1, limit: number = 20) => {
     try {
       const posts = await db.post.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
         orderBy: {
           date_posted: "desc",
         },
@@ -24,7 +26,16 @@ const post = {
       if (!posts.length) {
         throw new Api404Error("No posts found.");
       }
-      return posts;
+      const postsCountTotal = await db.post.count();
+
+      const hasMore = page * limit < postsCountTotal;
+
+      const meta = {
+        totalCount: postsCountTotal,
+        currentPage: page,
+        nextPage: hasMore ? page + 1 : null,
+      };
+      return {posts, meta: {meta}};
     } catch (error) {
       checkPrismaErrors(error);
     }

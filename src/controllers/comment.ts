@@ -6,27 +6,48 @@ import {
   RequestWithAll,
   RequestWithParams,
   RequestWithParamsAndBody,
+  RequestWithParamsAndQuery,
 } from "@/types/Request";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
 import {validateComment} from "@/utils/validators/content";
 import {Comment} from "@prisma/client";
 import {NextFunction, Response} from "express";
 import {validationResult} from "express-validator";
+import Api400Error from "@/utils/errors/api400Error";
+import {validatePaginationQuery} from "@/utils/validators/queries";
+import {CommentsResponseType} from "@/types/Response";
 
 const comment = {
-  getAllForPost: async (
-    req: RequestWithParams<{postId: string}>,
-    res: Response<Comment[]>,
-    next: NextFunction
-  ) => {
-    const postId = +req.params.postId;
-    try {
-      const comments = await models.comment.getAllForPost(postId);
-      res.json(comments);
-    } catch (error) {
-      next(error);
-    }
-  },
+  getAllForPost: [
+    ...validatePaginationQuery,
+    async (
+      req: RequestWithParamsAndQuery<
+        {postId: string},
+        {page?: string; limit?: string}
+      >,
+      res: Response<CommentsResponseType>,
+      next: NextFunction
+    ) => {
+      const postId = +req.params.postId;
+      const page = parseInt(req.query?.page ?? "1");
+      const limit = parseInt(req.query?.limit ?? "100");
+
+      if (isNaN(page) || isNaN(limit)) {
+        next(new Api400Error("Page and Limit queries must be numbers"));
+        return;
+      }
+      try {
+        const comments = await models.comment.getAllForPost(
+          postId,
+          page,
+          limit
+        );
+        res.json(comments);
+      } catch (error) {
+        next(error);
+      }
+    },
+  ],
   create: [
     validateComment,
     async function anonCreate(

@@ -6,6 +6,7 @@ import {
   RequestWithParams,
   RequestWithParamsAndBody,
   RequestWithParamsAndQuery,
+  RequestWithQuery,
 } from "@/types/Request";
 import {Query} from "express-serve-static-core";
 import handleValidationErrors from "@/utils/errors/validationErrorHandler";
@@ -13,16 +14,33 @@ import {validateEditPost, validatePost} from "@/utils/validators/content";
 import {Post} from "@prisma/client";
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
+import {PostsResponseType} from "@/types/Response";
+import Api400Error from "@/utils/errors/api400Error";
+import {validatePaginationQuery} from "@/utils/validators/queries";
 
 const post = {
-  getAll: async (req: Request, res: Response<Post[]>, next: NextFunction) => {
-    try {
-      const posts = await models.post.getAll();
-      res.json(posts);
-    } catch (error) {
-      next(error);
-    }
-  },
+  getAll: [
+    ...validatePaginationQuery,
+    async (
+      req: RequestWithQuery<{page?: string; limit?: string}>,
+      res: Response<PostsResponseType>,
+      next: NextFunction
+    ) => {
+      const page = parseInt(req.query?.page ?? "1");
+      const limit = parseInt(req.query?.limit ?? "100");
+
+      if (isNaN(page) || isNaN(limit)) {
+        next(new Api400Error("Page and Limit queries must be numbers"));
+        return;
+      }
+      try {
+        const posts = await models.post.getAll(page, limit);
+        res.json(posts);
+      } catch (error) {
+        next(error);
+      }
+    },
+  ],
   getById: async (
     req: RequestWithParams<{postId: string}>,
     res: Response<Post>,

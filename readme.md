@@ -19,23 +19,23 @@ TODO
 
 ## Endpoints
 
-| Endpoint                            | Method | Description                   |
-| ----------------------------------- | ------ | ----------------------------- |
-| /login                              | POST   | Login                         |
-| /register                           | POST   | Create new account            |
-| /posts                              | GET    | Retrieve a list of all posts  |
-| /posts/:id                          | GET    | Retrieve post by ID           |
-| /posts                              | POST   | Create new post               |
-| /posts/:id                          | PUT    | Update post by ID             |
-| /posts/:id                          | DELETE | Delete post by ID             |
-| /posts/:id/status?published=boolean | PUT    | Edit post's publicity         |
-| /posts/:id/comments                 | GET    | Retrieve list of all comments |
-| /posts/:id/comments                 | POST   | Create new comment            |
-| /posts/:id/comments/:id             | PUT    | Update comment by ID          |
-| /posts/:id/comments/:id             | DELETE | Delete comment by ID          |
-| /admin/posts/:id                    | DELETE | Delete specific post          |
-| /admin/comments/:id                 | DELETE | Delete specific comment       |
-| /admin/users/:id/role               | PUT    | Grant Admin role to user      |
+| Endpoint                            | Method | Description                                                              |
+| ----------------------------------- | ------ | ------------------------------------------------------------------------ |
+| /login                              | POST   | Login                                                                    |
+| /register                           | POST   | Create new account                                                       |
+| /posts                              | GET    | Retrieve a list of all posts. Optional: page and limit query parameters. |
+| /posts/:id                          | GET    | Retrieve post by ID                                                      |
+| /posts                              | POST   | Create new post                                                          |
+| /posts/:id                          | PUT    | Update post by ID                                                        |
+| /posts/:id                          | DELETE | Delete post by ID                                                        |
+| /posts/:id/status?published=boolean | PUT    | Edit post's publicity                                                    |
+| /posts/:id/comments                 | GET    | Retrieve list of all comments. Optional: page and limit query parameters |
+| /posts/:id/comments                 | POST   | Create new comment                                                       |
+| /posts/:id/comments/:id             | PUT    | Update comment by ID                                                     |
+| /posts/:id/comments/:id             | DELETE | Delete comment by ID                                                     |
+| /admin/posts/:id                    | DELETE | Delete specific post                                                     |
+| /admin/comments/:id                 | DELETE | Delete specific comment                                                  |
+| /admin/users/:id/role               | PUT    | Grant Admin role to user                                                 |
 
 ## Installation
 

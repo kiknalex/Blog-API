@@ -4,9 +4,15 @@ import Api404Error from "@/utils/errors/api404Error";
 import {checkPrismaErrors} from "@/utils/errors/prismaErrors";
 
 const comment = {
-  getAllForPost: async (postId: number) => {
+  getAllForPost: async (
+    postId: number,
+    page: number = 1,
+    limit: number = 100
+  ) => {
     try {
       const comments = await db.comment.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
         where: {
           postId,
         },
@@ -17,8 +23,20 @@ const comment = {
             },
           },
         },
+        orderBy: {
+          date_posted: "desc",
+        },
       });
-      return comments;
+      const commentsCountTotal = await db.post.count();
+
+      const hasMore = page * limit < commentsCountTotal;
+
+      const meta = {
+        totalCount: commentsCountTotal,
+        currentPage: page,
+        nextPage: hasMore ? page + 1 : null,
+      };
+      return {comments, meta: {meta}};
     } catch (error) {
       checkPrismaErrors(error);
     }

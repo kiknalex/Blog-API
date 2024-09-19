@@ -35,7 +35,7 @@ const post = {
         currentPage: page,
         nextPage: hasMore ? page + 1 : null,
       };
-      return {posts, meta: {meta}};
+      return {posts, meta};
     } catch (error) {
       checkPrismaErrors(error);
     }

@@ -11,9 +11,7 @@ export interface CommentsResponseType {
 }
 
 interface MetaType {
-  meta: {
-    totalCount: number;
-    currentPage: number;
-    nextPage: number | null;
-  };
+  totalCount: number;
+  currentPage: number;
+  nextPage: number | null;
 }

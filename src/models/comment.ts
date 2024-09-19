@@ -36,7 +36,7 @@ const comment = {
         currentPage: page,
         nextPage: hasMore ? page + 1 : null,
       };
-      return {comments, meta: {meta}};
+      return {comments, meta};
     } catch (error) {
       checkPrismaErrors(error);
     }

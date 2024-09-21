@@ -27,7 +27,11 @@ const comment = {
           date_posted: "desc",
         },
       });
-      const commentsCountTotal = await db.post.count();
+      const commentsCountTotal = await db.comment.count({
+        where: {
+          postId: postId,
+        },
+      });
 
       const hasMore = page * limit < commentsCountTotal;
 

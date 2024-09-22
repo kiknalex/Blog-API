@@ -55,7 +55,7 @@ const comment = {
       res: Response<string | ValidationErrors>,
       next: NextFunction
     ) {
-      if (req.query.anon === "true") {
+      if (req.query.anon === "false") {
         next();
       } else {
         const errors = validationResult(req).array();

@@ -59,7 +59,7 @@ const post = {
     verifyToken,
     async (
       req: RequestWithBody<{title: string; content: string}>,
-      res: Response<string | ValidationErrors>,
+      res: Response<{message: string} | ValidationErrors>,
       next: NextFunction
     ) => {
       const errors = validationResult(req).array();
@@ -74,7 +74,7 @@ const post = {
           title: req.body.title,
           content: req.body.content,
         });
-        res.send("Success!");
+        res.json({message: "Success!"});
       } catch (error) {
         next(error);
       }
@@ -113,7 +113,7 @@ const post = {
     verifyToken,
     async (
       req: RequestWithParams<{postId: string}>,
-      res: Response<string>,
+      res: Response<{message: string}>,
       next: NextFunction
     ) => {
       const userId = req.context!.authData!.userId;
@@ -121,7 +121,7 @@ const post = {
 
       try {
         await models.post.delete(postId, userId);
-        res.send(`Post with id: ${postId} successfully deleted.`);
+        res.json({message: `Post with id: ${postId} successfully deleted.`});
       } catch (error) {
         next(error);
       }
@@ -130,11 +130,8 @@ const post = {
   editPublicity: [
     verifyToken,
     async (
-      req: RequestWithParamsAndQuery<
-        {postId: string},
-        Query // TO FIX: Typescript error if type object
-      >,
-      res: Response<string>,
+      req: RequestWithParamsAndQuery<{postId: string}, Query>,
+      res: Response<{message: string}>,
       next: NextFunction
     ) => {
       const postId = +req.params.postId;
@@ -142,7 +139,7 @@ const post = {
       try {
         await models.post.editPublished(postId, isPublished);
         const publishedAction = isPublished ? "published" : "unpublished";
-        res.send(`Post ${publishedAction}`);
+        res.json({message: `Post ${publishedAction}`});
       } catch (error) {
         next(error);
       }
@@ -154,13 +151,13 @@ const post = {
       isAdmin,
       async (
         req: RequestWithParams<{postId: string}>,
-        res: Response<string>,
+        res: Response<{message: string}>,
         next: NextFunction
       ) => {
         const postId = +req.params.postId;
         try {
           await models.post.admin.delete(postId);
-          res.send("Post deleted.");
+          res.json({message: "Post deleted."});
         } catch (error) {
           next(error);
         }

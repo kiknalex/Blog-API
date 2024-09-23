@@ -16,7 +16,7 @@ const auth = {
     ...registerValidation,
     async (
       req: RequestWithBody<{username: string; password: string}>,
-      res: Response<string | ValidationErrors>,
+      res: Response<{message: string} | ValidationErrors>,
       next: NextFunction
     ) => {
       const errors = validationResult(req).array();
@@ -27,7 +27,7 @@ const auth = {
 
       const user = await models.user.getByUsername(req.body.username);
       if (user) {
-        res.status(400).send("Username already exists");
+        res.status(400).json({message: "Username already exists"});
         return;
       }
 
@@ -43,7 +43,9 @@ const auth = {
             );
           } else {
             models.auth.createUserRecord(req.body.username, hash);
-            res.send(`New user "${req.body.username}" successfully registered`);
+            res.json({
+              message: `New user "${req.body.username}" successfully registered`,
+            });
           }
         });
       } catch (error) {
@@ -55,12 +57,12 @@ const auth = {
     body("username").escape().trim(),
     async (
       req: RequestWithBody<{username: string; password: string}>,
-      res: Response<string | {token: string | undefined}>,
+      res: Response<{message: string} | {token: string | undefined}>,
       next: NextFunction
     ) => {
       const user = await models.auth.getUserWithPassword(req.body.username);
       if (!user) {
-        res.status(400).send("Username or password is incorrect.");
+        res.status(400).json({message: "Username or password is incorrect."});
         return;
       }
 
@@ -99,7 +101,7 @@ const auth = {
             }
           );
         } else {
-          res.status(400).send("Username or password is incorrect.");
+          res.status(400).json({message: "Username or password is incorrect."});
         }
       });
     },

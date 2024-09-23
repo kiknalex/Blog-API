@@ -36,14 +36,14 @@ const user = {
       isAdmin,
       async (
         req: RequestWithParams<{userId: string}>,
-        res: Response<string>,
+        res: Response<{message: string}>,
         next: NextFunction
       ) => {
         const userId = +req.params.userId;
 
         try {
           await models.user.admin.editRole(userId, "ADMIN");
-          res.send(`Admin privilege granted to id: ${userId}`);
+          res.json({message: `Admin privilege granted to id: ${userId}`});
         } catch (error) {
           next(error);
         }

@@ -52,7 +52,7 @@ const comment = {
     validateComment,
     async function anonCreate(
       req: RequestWithAll<{postId: string}, {content: string}, Query>,
-      res: Response<string | ValidationErrors>,
+      res: Response<{message: string} | ValidationErrors>,
       next: NextFunction
     ) {
       if (req.query.anon === "false") {
@@ -66,7 +66,7 @@ const comment = {
         const postId = +req.params.postId;
         try {
           await models.comment.create(postId, {content: req.body.content});
-          res.send(`Comment created.`);
+          res.json({message: `Comment created.`});
         } catch (error) {
           next(error);
         }
@@ -78,7 +78,7 @@ const comment = {
         {postId: string},
         {title: string; content: string}
       >,
-      res: Response<string | ValidationErrors>,
+      res: Response<{message: string} | ValidationErrors>,
       next: NextFunction
     ) => {
       const errors = validationResult(req).array();
@@ -97,7 +97,7 @@ const comment = {
           },
           userId
         );
-        res.send("Success!");
+        res.json({message: "Success!"});
       } catch (error) {
         next(error);
       }
@@ -132,7 +132,7 @@ const comment = {
     verifyToken,
     async (
       req: RequestWithParams<{commentId: string}>,
-      res: Response<string>,
+      res: Response<{message: string}>,
       next: NextFunction
     ) => {
       const userId = req.context!.authData!.userId!;
@@ -140,7 +140,9 @@ const comment = {
 
       try {
         await models.comment.delete(commentId, userId);
-        res.send(`Comment with id: ${commentId} successfully deleted.`);
+        res.json({
+          message: `Comment with id: ${commentId} successfully deleted.`,
+        });
       } catch (error) {
         next(error);
       }
@@ -152,13 +154,13 @@ const comment = {
       isAdmin,
       async (
         req: RequestWithParams<{commentId: string}>,
-        res: Response<string>,
+        res: Response<{message: string}>,
         next: NextFunction
       ) => {
         const commentId = +req.params.commentId;
         try {
           await models.comment.admin.delete(commentId);
-          res.send("Comment deleted.");
+          res.json({message: "Comment deleted."});
         } catch (error) {
           next(error);
         }

@@ -54,6 +54,13 @@ const post = {
           },
           comments: {
             take: 6,
+            include: {
+              author: {
+                select: {
+                  username: true,
+                },
+              },
+            },
             orderBy: {
               date_posted: "desc",
             },

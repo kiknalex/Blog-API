@@ -8,6 +8,7 @@ import {
 } from "./middlewares/errorHandler";
 import {CustomError} from "./types/error";
 import cors from "cors";
+import controllers from "./controllers";
 const app = express();
 
 const corsOptions = {
@@ -22,9 +23,11 @@ app.use("/users", routes.auth);
 app.use("/posts", routes.post);
 app.use("/posts/:postId/comments", routes.comment);
 app.use("/admin", routes.admin);
-
+app.use("/profile", routes.profile);
 app.use(logError);
 app.use(returnError);
+
+app.get("/profile", controllers.user.getProfile);
 
 process.on("unhandledRejection", (error) => {
   throw error;

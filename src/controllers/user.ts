@@ -3,6 +3,8 @@ import models from "@/models";
 import {RequestWithParams} from "@/types/Request";
 import {UserWithoutPassword} from "@/database/types/UserWithoutPassword";
 import {isAdmin, verifyToken} from "@/middlewares/auth";
+import {es} from "@faker-js/faker/.";
+import {ProfileResponseType} from "@/types/Response";
 
 const user = {
   getAll: async (
@@ -30,6 +32,22 @@ const user = {
       next(error);
     }
   },
+  getProfile: [
+    verifyToken,
+    async (
+      req: Request,
+      res: Response<ProfileResponseType>,
+      next: NextFunction
+    ) => {
+      const userId = req.context!.authData?.userId!;
+      try {
+        const user = await models.user.getById(userId);
+        res.json(user);
+      } catch (error) {
+        next(error);
+      }
+    },
+  ],
   admin: {
     grandAdminRole: [
       verifyToken,

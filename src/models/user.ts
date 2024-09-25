@@ -21,6 +21,38 @@ const user = {
         where: {
           id,
         },
+        include: {
+          posts: {
+            take: 12,
+            orderBy: {
+              date_posted: "desc",
+            },
+            select: {
+              id: true,
+              date_posted: true,
+              title: true,
+              content: true,
+              published: true,
+              _count: {
+                select: {
+                  comments: true,
+                },
+              },
+            },
+          },
+          comments: {
+            take: 12,
+            orderBy: {
+              date_posted: "desc",
+            },
+            select: {
+              id: true,
+              content: true,
+              date_posted: true,
+              postId: true,
+            },
+          },
+        },
       });
       if (user === null) {
         throw new Api404Error(`User with id: ${id} not found.`);

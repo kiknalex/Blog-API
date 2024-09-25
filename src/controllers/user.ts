@@ -3,7 +3,6 @@ import models from "@/models";
 import {RequestWithParams} from "@/types/Request";
 import {UserWithoutPassword} from "@/database/types/UserWithoutPassword";
 import {isAdmin, verifyToken} from "@/middlewares/auth";
-import {es} from "@faker-js/faker/.";
 import {ProfileResponseType} from "@/types/Response";
 
 const user = {

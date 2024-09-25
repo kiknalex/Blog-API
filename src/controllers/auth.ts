@@ -57,7 +57,10 @@ const auth = {
     body("username").escape().trim(),
     async (
       req: RequestWithBody<{username: string; password: string}>,
-      res: Response<{message: string} | {token: string | undefined}>,
+      res: Response<
+        | {message: string}
+        | {token: string | undefined; username: string; userId: number}
+      >,
       next: NextFunction
     ) => {
       const user = await models.auth.getUserWithPassword(req.body.username);
@@ -96,6 +99,8 @@ const auth = {
               } else {
                 res.json({
                   token,
+                  username: user.username,
+                  userId: user.id,
                 });
               }
             }

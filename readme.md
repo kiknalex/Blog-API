@@ -21,8 +21,8 @@ TODO
 
 | Endpoint                            | Method | Description                                                              |
 | ----------------------------------- | ------ | ------------------------------------------------------------------------ |
-| /login                              | POST   | Login                                                                    |
-| /register                           | POST   | Create new account                                                       |
+| /users/login                        | POST   | Login                                                                    |
+| /users/register                     | POST   | Create new account                                                       |
 | /posts                              | GET    | Retrieve a list of all posts. Optional: page and limit query parameters. |
 | /posts/:id                          | GET    | Retrieve post by ID                                                      |
 | /posts                              | POST   | Create new post                                                          |

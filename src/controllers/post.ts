@@ -59,7 +59,7 @@ const post = {
     verifyToken,
     async (
       req: RequestWithBody<{title: string; content: string}>,
-      res: Response<{message: string} | ValidationErrors>,
+      res: Response<Post | ValidationErrors>,
       next: NextFunction
     ) => {
       const errors = validationResult(req).array();
@@ -70,11 +70,11 @@ const post = {
       const userId = req.context!.authData!.userId;
 
       try {
-        await models.post.create(userId, {
+        const response = await models.post.create(userId, {
           title: req.body.title,
           content: req.body.content,
         });
-        res.json({message: "Success!"});
+        res.json(response);
       } catch (error) {
         next(error);
       }

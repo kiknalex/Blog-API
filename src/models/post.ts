@@ -89,12 +89,13 @@ const post = {
     }
   ) => {
     try {
-      await db.post.create({
+      const post = await db.post.create({
         data: {
           ...data,
           authorId,
         },
       });
+      return post;
     } catch (error) {
       checkPrismaErrors(error);
     }

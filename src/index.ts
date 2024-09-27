@@ -12,7 +12,7 @@ import controllers from "./controllers";
 const app = express();
 
 const corsOptions = {
-  origin: "https://odinsblog.netlify.app/",
+  origin: "https://odinsblog.netlify.app",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

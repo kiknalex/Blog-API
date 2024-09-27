@@ -9,13 +9,10 @@ A RESTful API that provides a convenient and secure way to access and manage you
 - Authentication and authorization to ensure that only authorized users have access to your data.
 - Robust error handling and validation to ensure that your data is accurate and secure.
 
-## Content Management System
-
-TODO
-
 ## Client
 
-TODO
+- [Demo](https://odinsblog.netlify.app/)
+- [Github Repo](https://github.com/kiknalex/blog_frontend)
 
 ## Endpoints
 
